@@ -1,0 +1,71 @@
+.storyTray {
+  width: 100%;
+  padding: 16px;
+  background: #fff;
+  border-bottom: 1px solid #dbdbdb;
+}
+
+.trayContainer {
+  display: flex;
+  overflow-x: auto;
+  gap: 12px;
+  padding: 4px 0;
+  -webkit-overflow-scrolling: touch;
+}
+
+.trayContainer::-webkit-scrollbar {
+  display: none;
+}
+
+.loadingState,
+.emptyState,
+.errorState {
+  padding: 60px 20px;
+  text-align: center;
+}
+
+.loadingState h3,
+.emptyState h3,
+.errorState h3 {
+  font-size: 16px;
+  color: #262626;
+  margin-bottom: 12px;
+}
+
+.errorState p {
+  font-size: 14px;
+  color: #8e8e8e;
+  margin-bottom: 16px;
+}
+
+.retryButton {
+  padding: 8px 24px;
+  background: #0095f6;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+.retryButton:active {
+  opacity: 0.7;
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid #dbdbdb;
+  border-top-color: #0095f6;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 16px;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

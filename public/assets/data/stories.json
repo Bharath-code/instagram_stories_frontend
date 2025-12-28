@@ -1,0 +1,93 @@
+[
+  {
+    "userId": "u1",
+    "username": "photographer_joe",
+    "profilePicture": "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=200&h=200&fit=crop",
+    "stories": [
+      {
+        "storyId": "s1-1",
+        "imageUrl": "https://images.unsplash.com/photo-1682687220742-aba13b6e50ba?w=800&h=1200&fit=crop"
+      },
+      {
+        "storyId": "s1-2",
+        "imageUrl": "https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=800&h=1200&fit=crop"
+      },
+      {
+        "storyId": "s1-3",
+        "imageUrl": "https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=800&h=1200&fit=crop"
+      }
+    ]
+  },
+  {
+    "userId": "u2",
+    "username": "travel_sarah",
+    "profilePicture": "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200&h=200&fit=crop",
+    "stories": [
+      {
+        "storyId": "s2-1",
+        "imageUrl": "https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=800&h=1200&fit=crop"
+      },
+      {
+        "storyId": "s2-2",
+        "imageUrl": "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800&h=1200&fit=crop"
+      }
+    ]
+  },
+  {
+    "userId": "u3",
+    "username": "foodie_mike",
+    "profilePicture": "https://images.unsplash.com/photo-1599566150163-29194dcaad36?w=200&h=200&fit=crop",
+    "stories": [
+      {
+        "storyId": "s3-1",
+        "imageUrl": "https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=800&h=1200&fit=crop"
+      },
+      {
+        "storyId": "s3-2",
+        "imageUrl": "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=800&h=1200&fit=crop"
+      },
+      {
+        "storyId": "s3-3",
+        "imageUrl": "https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?w=800&h=1200&fit=crop"
+      },
+      {
+        "storyId": "s3-4",
+        "imageUrl": "https://images.unsplash.com/photo-1484723091739-30a097e8f929?w=800&h=1200&fit=crop"
+      }
+    ]
+  },
+  {
+    "userId": "u4",
+    "username": "nature_explorer",
+    "profilePicture": "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=200&h=200&fit=crop",
+    "stories": [
+      {
+        "storyId": "s4-1",
+        "imageUrl": "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=800&h=1200&fit=crop"
+      },
+      {
+        "storyId": "s4-2",
+        "imageUrl": "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?w=800&h=1200&fit=crop"
+      },
+      {
+        "storyId": "s4-3",
+        "imageUrl": "https://images.unsplash.com/photo-1501854140884-074cf2b21d3c?w=800&h=1200&fit=crop"
+      }
+    ]
+  },
+  {
+    "userId": "u5",
+    "username": "urban_architect",
+    "profilePicture": "https://images.unsplash.com/photo-1527980965255-d3b416303d12?w=200&h=200&fit=crop",
+    "stories": [
+      {
+        "storyId": "s5-1",
+        "imageUrl": "https://images.unsplash.com/photo-1486325212027-8081e485255e?w=800&h=1200&fit=crop"
+      },
+      {
+        "storyId": "s5-2",
+        "imageUrl": "https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=800&h=1200&fit=crop"
+      }
+    ]
+  }
+]
