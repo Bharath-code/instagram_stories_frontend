@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect, useMemo } from 'react';
+import React, { useState, useCallback, useEffect, useMemo, useRef } from 'react';
 import { UserStoryGroup } from '../../types';
 import { useStoryTimer } from '../../hooks/useStoryTimer';
 import { useSwipeGesture } from '../../hooks/useSwipeGesture';
@@ -27,12 +27,15 @@ export const StoryViewer = ({
   const [activeStoryIndex, setActiveStoryIndex] = useState(initialStoryIndex);
   const [isPaused, setIsPaused] = useState(false);
   const [completedStories, setCompletedStories] = useState<Set<number>>(new Set());
+  const autoAdvanceTriggeredRef = useRef(false);
 
   const currentUser = stories[activeUserIndex];
   const currentStory = currentUser?.stories[activeStoryIndex];
   const { markAsSeen } = useSeenStories();
 
-  const { progress, reset } = useStoryTimer(STORY_DURATION, isPaused);
+  // Create a unique key for the current story to force timer reset
+  const storyKey = currentUser && currentStory ? `${currentUser.userId}-${currentStory.storyId}` : '';
+  const { progress } = useStoryTimer(STORY_DURATION, isPaused, storyKey);
 
   const nextStoryIndex = activeStoryIndex + 1;
   const nextUserIndex = activeUserIndex + 1;
@@ -51,19 +54,18 @@ export const StoryViewer = ({
   useImagePreload(nextImageUrl || '');
 
   const goToNext = useCallback(() => {
+    autoAdvanceTriggeredRef.current = false;
     if (nextStoryIndex < currentUser?.stories.length) {
       setActiveStoryIndex(nextStoryIndex);
       setCompletedStories(prev => new Set(prev).add(activeStoryIndex));
-      reset();
     } else if (nextUserIndex < stories.length) {
       setActiveUserIndex(nextUserIndex);
       setActiveStoryIndex(0);
       setCompletedStories(new Set());
-      reset();
     } else {
       onClose();
     }
-  }, [nextStoryIndex, currentUser, nextUserIndex, stories, activeStoryIndex, reset, onClose]);
+  }, [nextStoryIndex, currentUser, nextUserIndex, stories, activeStoryIndex, onClose]);
 
   const goToPrevious = useCallback(() => {
     if (prevStoryIndex >= 0) {
@@ -73,16 +75,12 @@ export const StoryViewer = ({
         newSet.delete(prevStoryIndex);
         return newSet;
       });
-      reset();
     } else if (prevUserIndex >= 0) {
       setActiveUserIndex(prevUserIndex);
       setActiveStoryIndex(stories[prevUserIndex].stories.length - 1);
       setCompletedStories(new Set());
-      reset();
-    } else {
-      reset();
     }
-  }, [prevStoryIndex, prevUserIndex, stories, reset]);
+  }, [prevStoryIndex, prevUserIndex, stories]);
 
   const { onTouchStart, onTouchEnd } = useSwipeGesture(goToNext, goToPrevious);
 
@@ -96,7 +94,7 @@ export const StoryViewer = ({
     const x = e.clientX - rect.left;
     const width = rect.width;
 
-    if (x < width * 0.25) {
+    if (x < width * 0.30) {
       goToPrevious();
     } else {
       goToNext();
@@ -125,10 +123,13 @@ export const StoryViewer = ({
   }, [handleKeyDown]);
 
   useEffect(() => {
-    if (progress >= 100 && !isPaused) {
+    if (progress >= 100 && !isPaused && !autoAdvanceTriggeredRef.current) {
+      autoAdvanceTriggeredRef.current = true;
       goToNext();
+    } else if (progress < 100) {
+      autoAdvanceTriggeredRef.current = false;
     }
-  }, [progress, isPaused, goToNext]);
+  }, [progress, isPaused]);
 
   const handlePause = () => setIsPaused(true);
   const handleResume = () => setIsPaused(false);
@@ -160,11 +161,20 @@ export const StoryViewer = ({
         />
         <StoryContent
           imageUrl={currentStory.imageUrl}
-          onRetry={() => reset()}
         />
-        <div className={styles.viewerOverlay} onClick={handleTap}>
-          <div className={`${styles.navigationZone} ${styles.leftZone}`} />
-          <div className={`${styles.navigationZone} ${styles.rightZone}`} />
+        <div className={styles.viewerOverlay} onClick={handleTap} role="toolbar" aria-label="Story navigation">
+          <div
+            className={`${styles.navigationZone} ${styles.leftZone}`}
+            role="button"
+            aria-label="Go to previous story"
+            tabIndex={-1}
+          />
+          <div
+            className={`${styles.navigationZone} ${styles.rightZone}`}
+            role="button"
+            aria-label="Go to next story"
+            tabIndex={-1}
+          />
         </div>
       </div>
     </div>

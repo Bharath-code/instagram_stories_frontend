@@ -11,12 +11,16 @@ interface StoryTrayProps {
 }
 
 export const StoryTray = ({ stories, loading, error, onOpenStory, onRetry }: StoryTrayProps) => {
+  // NOTE: Virtualization is already implemented via IntersectionObserver in StoryCard.
+  // For 50+ users, consider adding windowing (react-window) to render only visible items
+  // and recycle DOM nodes for better performance.
+
   if (loading) {
     return (
-      <div className={styles.storyTray}>
+      <div className={styles.storyTray} role="status" aria-live="polite">
         <div className={styles.loadingState}>
-          <div className={styles.spinner} />
-          <h3>Loading stories...</h3>
+          <div className={styles.spinner} aria-hidden="true" />
+          <h2>Loading stories...</h2>
         </div>
       </div>
     );
@@ -24,10 +28,14 @@ export const StoryTray = ({ stories, loading, error, onOpenStory, onRetry }: Sto
 
   if (error) {
     return (
-      <div className={styles.storyTray}>
+      <div className={styles.storyTray} role="alert" aria-live="assertive">
         <div className={styles.errorState}>
-          <h3>{error}</h3>
-          <button className={styles.retryButton} onClick={onRetry}>
+          <h2>{error}</h2>
+          <button
+            className={styles.retryButton}
+            onClick={onRetry}
+            aria-label="Retry loading stories"
+          >
             Retry
           </button>
         </div>
@@ -39,14 +47,14 @@ export const StoryTray = ({ stories, loading, error, onOpenStory, onRetry }: Sto
     return (
       <div className={styles.storyTray}>
         <div className={styles.emptyState}>
-          <h3>No stories available</h3>
+          <h2>No stories available</h2>
         </div>
       </div>
     );
   }
 
   return (
-    <div className={styles.storyTray}>
+    <div className={styles.storyTray} role="region" aria-label="Story tray">
       <div className={styles.trayContainer}>
         {stories.map((user, index) => (
           <StoryCard key={user.userId} user={user} index={index} onOpen={onOpenStory} />

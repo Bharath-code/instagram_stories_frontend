@@ -26,7 +26,7 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
   render() {
     if (this.state.hasError) {
       return (
-        <div style={{
+        <div role="alert" aria-live="assertive" style={{
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
@@ -36,14 +36,15 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
           textAlign: 'center',
           background: '#fff'
         }}>
-          <h2 style={{ fontSize: '20px', marginBottom: '12px', color: '#262626' }}>
+          <h1 style={{ fontSize: '20px', marginBottom: '12px', color: '#262626' }}>
             Something went wrong
-          </h2>
+          </h1>
           <p style={{ fontSize: '14px', color: '#8e8e8e', marginBottom: '16px' }}>
             {this.state.error?.message || 'An unexpected error occurred'}
           </p>
           <button
             onClick={() => window.location.reload()}
+            aria-label="Reload page"
             style={{
               padding: '10px 24px',
               background: '#0095f6',

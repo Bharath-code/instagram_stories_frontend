@@ -32,7 +32,7 @@ const AppContent = () => {
   };
 
   return (
-    <>
+    <main id="main-content">
       <StoryTray
         stories={stories}
         loading={loading}
@@ -48,7 +48,7 @@ const AppContent = () => {
           onClose={handleCloseViewer}
         />
       )}
-    </>
+    </main>
   );
 };
 

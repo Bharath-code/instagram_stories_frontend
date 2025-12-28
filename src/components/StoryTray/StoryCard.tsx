@@ -26,7 +26,7 @@ export const StoryCard = ({ user, index, onOpen }: StoryCardProps) => {
           }
         });
       },
-      { threshold: 0.1 }
+      { threshold: 0.1, rootMargin: '50px' }
     );
 
     if (cardRef.current) {
@@ -47,6 +47,9 @@ export const StoryCard = ({ user, index, onOpen }: StoryCardProps) => {
     }
   };
 
+  const fallbackColor = user.username.charCodeAt(0) % 3 === 0 ? '#e6683c' :
+                       user.username.charCodeAt(0) % 2 === 0 ? '#cc2366' : '#bc1888';
+
   return (
     <div
       ref={cardRef}
@@ -56,6 +59,7 @@ export const StoryCard = ({ user, index, onOpen }: StoryCardProps) => {
       onClick={() => onOpen(index)}
       onKeyDown={handleKeyDown}
       aria-label={`View ${user.username}'s stories`}
+      style={{ contain: 'layout style paint' }}
     >
       <div
         className={`${styles.avatarWrapper} ${allSeen ? styles.seen : styles.unseen}`}
@@ -63,7 +67,22 @@ export const StoryCard = ({ user, index, onOpen }: StoryCardProps) => {
         {!imageLoaded && !imageError && (
           <div className={styles.skeletonAvatar} />
         )}
-        {isVisible && !imageError ? (
+        {imageError ? (
+          <div
+            className={styles.avatar}
+            style={{
+              background: fallbackColor,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              color: 'white',
+              fontSize: '24px',
+              fontWeight: 'bold'
+            }}
+          >
+            {user.username.charAt(0).toUpperCase()}
+          </div>
+        ) : isVisible && (
           <img
             src={user.profilePicture}
             alt={`${user.username}'s profile`}
@@ -75,7 +94,7 @@ export const StoryCard = ({ user, index, onOpen }: StoryCardProps) => {
             }}
             style={{ display: imageLoaded ? 'block' : 'none' }}
           />
-        ) : null}
+        )}
       </div>
       <span className={styles.username}>{user.username}</span>
     </div>

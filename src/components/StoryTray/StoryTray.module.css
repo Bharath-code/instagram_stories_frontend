@@ -24,9 +24,9 @@
   text-align: center;
 }
 
-.loadingState h3,
-.emptyState h3,
-.errorState h3 {
+.loadingState h2,
+.emptyState h2,
+.errorState h2 {
   font-size: 16px;
   color: #262626;
   margin-bottom: 12px;

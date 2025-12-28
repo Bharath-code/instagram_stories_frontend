@@ -1,22 +1,43 @@
 import { useState, useEffect, useRef } from 'react';
 
-export const useStoryTimer = (duration: number, isPaused: boolean) => {
+export const useStoryTimer = (duration: number, isPaused: boolean, key: string | number) => {
   const [progress, setProgress] = useState(0);
+  const startTimeRef = useRef<number | null>(null);
+  const pausedAtRef = useRef<number | null>(null);
   const requestRef = useRef<number>();
-  const startTimeRef = useRef<number>();
+
+  useEffect(() => {
+    // Reset state when key changes
+    setProgress(0);
+    startTimeRef.current = null;
+    pausedAtRef.current = null;
+  }, [key]);
 
   useEffect(() => {
     if (isPaused) {
       if (requestRef.current) {
         cancelAnimationFrame(requestRef.current);
       }
+      if (!pausedAtRef.current) {
+        pausedAtRef.current = performance.now();
+      }
       return;
     }
 
-    startTimeRef.current = performance.now();
+    if (pausedAtRef.current && startTimeRef.current) {
+      const pausedDuration = performance.now() - pausedAtRef.current;
+      startTimeRef.current += pausedDuration;
+      pausedAtRef.current = null;
+    } else if (!startTimeRef.current) {
+      startTimeRef.current = performance.now();
+    }
 
     const animate = (currentTime: number) => {
-      const elapsed = currentTime - startTimeRef.current!;
+      if (!startTimeRef.current) {
+        startTimeRef.current = currentTime;
+      }
+
+      const elapsed = currentTime - startTimeRef.current;
       const newProgress = Math.min((elapsed / duration) * 100, 100);
       setProgress(newProgress);
 
@@ -32,11 +53,7 @@ export const useStoryTimer = (duration: number, isPaused: boolean) => {
         cancelAnimationFrame(requestRef.current);
       }
     };
-  }, [duration, isPaused]);
+  }, [duration, isPaused, key]);
 
-  const reset = () => {
-    setProgress(0);
-  };
-
-  return { progress, reset };
+  return { progress };
 };
